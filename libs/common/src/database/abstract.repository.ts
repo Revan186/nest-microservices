@@ -6,7 +6,6 @@ import {
   UpdateQuery,
   SaveOptions,
   Connection,
-  ClientSession,
 } from 'mongoose';
 import { AbstractDocument } from './abstract.schema';
 
@@ -39,7 +38,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       throw new NotFoundException('Document not found.');
     }
 
-    return document as TDocument;
+    return document;
   }
 
   async findOneAndUpdate(
@@ -74,7 +73,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return this.model.find(filterQuery, {}, { lean: true });
   }
 
-  async startTransaction(): Promise<ClientSession> {
+  async startTransaction() {
     const session = await this.connection.startSession();
     session.startTransaction();
     return session;
